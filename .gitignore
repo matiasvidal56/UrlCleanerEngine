@@ -1,0 +1,19 @@
+# IDE and Local Config
+.idea/
+*.iml
+local.properties
+.DS_Store
+
+# Gradle and Build
+.gradle/
+build/
+/build
+
+# Android Specific
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Binary Outputs
+*.apk
+*.aar

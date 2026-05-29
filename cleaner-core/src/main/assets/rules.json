@@ -1,0 +1,12 @@
+{
+  "global_trackers": ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid"],
+  "platform_rules": [
+    { "host": "instagram.com", "params": ["igsh", "igshid"] },
+    { "host": "spotify.com", "params": ["si", "pi", "nd"] },
+    { "host": "tiktok.com", "params": ["_r", "is_from_webapp", "sender_device", "share_link_id"] },
+    { "host": "youtube.com", "params": ["si", "feature"] },
+    { "host": "youtu.be", "params": ["si", "feature"] },
+    { "host": "twitter.com", "params": ["s", "t"] },
+    { "host": "x.com", "params": ["s", "t"] }
+  ]
+}
