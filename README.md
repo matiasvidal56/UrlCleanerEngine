@@ -1,6 +1,8 @@
 # UrlCleanerEngine
 
-UrlCleanerEngine is a lightweight Kotlin-based library for Android designed to identify and remove tracking parameters from social media and web URLs. The engine utilizes a decoupled architecture where cleaning logic is separated from filtering rules, allowing for efficient updates and community contributions.
+UrlCleanerEngine is a lightweight Kotlin-based library for Android designed to sanitize URLs by removing tracking parameters and identifying the target native application for routing.
+
+The engine utilizes a decoupled architecture where cleaning logic is separated from filtering rules, allowing for efficient updates and community-driven expansion of supported platforms.
 
 ## Installation
 
@@ -23,36 +25,55 @@ Add the following dependency to your module-level `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.matiasvidal56:UrlCleanerEngine:v1.0.0")
+    implementation("com.github.matiasvidal56:UrlCleanerEngine:v1.1.0")
 }
 ```
 
 ## Implementation
 
 ### Initialization
-The engine requires a context to load the initial filtering rules from the assets. Initialize the engine once in your Activity or Application class:
+Initialize the engine once in your Activity or Application class to load the rules from assets:
 
 ```kotlin
 UrlCleaner.init(context)
 ```
 
-### URL Processing
-Pass a URL string to the `clean` method to return the processed string without tracking parameters:
+### URL Sanitization & Routing
+The `clean` method returns a `CleanResult` object containing the sanitized URL and a list of preferred Android package names.
 
 ```kotlin
-val rawUrl = "https://www.instagram.com/p/Example/?igsh=tracking_id"
-val processedUrl = UrlCleaner.clean(rawUrl)
-// Output: https://www.instagram.com/p/Example/
+val rawUrl = "https://www.instagram.com/reels/C123/?igsh=abc123"
+val result = UrlCleaner.clean(rawUrl)
+
+// Access sanitized URL
+val cleanUrl = result.url 
+// Output: https://www.instagram.com/reels/C123/
+
+// Access target packages for routing
+val targetPackage = result.preferredPackages.firstOrNull()
+// Output: "com.instagram.android"
 ```
 
 ## Contribution Guide
 
-The filtering rules are stored in a structured JSON format to facilitate updates without modifying the source code.
+The engine's intelligence relies on `rules.json`. We encourage the community to keep this database updated.
 
-### Adding New Filters
+### JSON Structure
+Rules are grouped by platform to prevent duplicates. Each entry supports multiple hosts and package names:
+
+```json
+{
+  "name": "YouTube",
+  "hosts": ["youtube.com", "youtu.be", "m.youtube.com"],
+  "packages": ["com.google.android.youtube"],
+  "params": ["si", "feature"]
+}
+```
+
+### How to contribute
 1. Navigate to `cleaner-core/src/main/assets/rules.json`.
-2. Locate the `global_trackers` array for universal parameters or `platform_rules` for host-specific parameters.
-3. Submit a Pull Request with the proposed changes.
+2. Add new parameters to existing platforms or create a new platform entry.
+3. Submit a Pull Request.
 
 ## License
 This project is licensed under the MIT License.
